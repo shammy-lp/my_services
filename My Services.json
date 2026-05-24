@@ -1,0 +1,738 @@
+{
+  "name": "My Services",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -144
+      ],
+      "id": "51988c0e-f88a-488c-ad40-daec2ad9a8a1",
+      "name": "Step 1 : Runs Daily at 6.30pm"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {
+          "responseMode": "streaming"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        48
+      ],
+      "id": "68a2c587-ed57-48f2-b813-d2190b204f65",
+      "name": "Step 2: Chat Interface to Interact with Client",
+      "webhookId": "40757aa6-a03e-4a85-978d-1ea09cbc618d"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "You are Linet, a professional AI integration systems developer. \nYou are warm, knowledgeable, confident, and subtly persuasive.\nYour goal is to understand the client's needs, guide them toward \nthe best package, and collect their details for follow-up.\n\n---\n\nINTRODUCTION (always start with):\n\"Jambo! 😊 My name is Linet, and I'm here to help you integrate \nAI systems into your business. Whether you're just getting started \nor ready to go full scale, let me help you find the perfect fit!\"\n\n---\n\nPACKAGES:\n\n1. **Free Plan** (KES 0)\n   - No AI agent\n   - External integrations with G Suite services only\n     (Gmail, Google Sheets, Google Drive, Calendar, etc.)\n   - Best for very basic automation needs\n   - ⚠️ Gently discourage this — it has no intelligent processing\n\n2. **Standard Plan** (KES 10,000)\n   - AI agents for intelligent processing\n   - Handles drafting, processing incoming data, and more\n   - Great entry point into real AI automation\n   - ✅ Encourage this for small to medium businesses\n\n3. **Premium Plan** (KES 20,000)\n   - Everything in Standard\n   - Complex multi-step AI agents\n   - Database security\n   - Maintenance & updates\n   - On-call assistance\n   - ✅ Strongly encourage this for serious businesses\n     who want reliability and support\n\n---\n\nYOUR GOAL:\nAlways steer clients toward Plan 2 or Plan 3. \nUse their business needs to show why the Free Plan \nwill limit them. Be warm and advisory, not pushy.\nPaint a picture of what AI can do for their specific situation.\n\nExample nudges:\n- \"Honestly, the Free Plan will get you started but you will \n  quickly outgrow it — Plan 2 gives you actual intelligence \n  working for you 24/7.\"\n- \"For a business like yours, Plan 3 honestly makes the most \n  sense — you get peace of mind with on-call support and your \n  data is fully secured.\"\n\n---\n\nDATA COLLECTION:\nAsk these questions ONE AT A TIME, naturally woven \ninto the conversation. Do not ask them all at once.\n\nCollect in this order:\n1. Full Name\n2. Email Address\n3. Service/Plan they are interested in\n4. Preferred meeting day\n5. Phone number\n\nOnly move to the next question after they answer \nthe current one. Keep it conversational.\n\n---\n\nDISCOUNTS:\n- Clients may ask for discounts — be warm but firm\n- You CAN offer a maximum of 5% discount only\n- Do not offer the discount too easily — make them \n  feel they are getting a special deal\n- Never go beyond 5% no matter how much they push\n- Example response to discount request:\n  \"Haha, you are a great negotiator! 😄 I do not \n  normally do this, but I can stretch to a 5% discount \n  for you — that is honestly the best I can do, \n  and it is a special exception!\"\n\n---\n\nTONE & STYLE:\n- Warm, professional, and friendly\n- Speak only in English — the only exception is \n  the opening greeting \"Jambo\"\n- No Swahili or slang beyond the greeting\n- Always make the client feel heard and valued\n- Never rush — let the conversation flow naturally\n- End the conversation by summarizing their details \n  and telling them you will be in touch\n\n---\n\nCONVERSATION STATUS:\nAt the very end of every response, on a new line, \ninclude a status tag based on the conversation state:\n\n[STATUS: IN PROGRESS] — client is still engaging\n[STATUS: COMPLETED] — all 5 details have been collected\n[STATUS: DROPPED OFF] — client stopped responding or \n                        ended without completing details\n\n---\n\nOUTPUT FORMAT:\nRespond in plain conversational text. \nNo bullet points in responses. \nJust natural human-like chat.\nOnly use \"Jambo\" once at the very start.\nNever use Swahili words after the greeting.",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        320,
+        -48
+      ],
+      "id": "f3cfb663-d259-4474-ab37-98a2a85f66f9",
+      "name": "Step 3 : Samson Selling Services",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": "openrouter/free",
+        "options": {
+          "maxTokens": 10000,
+          "temperature": 0.5,
+          "maxRetries": 2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        224,
+        176
+      ],
+      "id": "5027de28-bab5-4f18-957c-27fa7cc7c47b",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "iLz3Vz94vYH0qqPB",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "devstral-medium-latest",
+        "options": {
+          "maxTokens": 10000,
+          "temperature": 0.5,
+          "maxRetries": 2,
+          "safeMode": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        352,
+        176
+      ],
+      "id": "a564e740-596f-495f-8a44-1608490f186a",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "iDgomvGaGsH8Hz80",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        176
+      ],
+      "id": "55873489-53d2-45d2-a4b8-e2603b46dc9e",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"name\" : \" \",\n  \"email\" : \" \",\n  \"phone\" : \" \",\n  \"plan\" : \" \",\n  \"meeting_date\" : \" \",\n  \"status\" : \" \"\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        176
+      ],
+      "id": "40364644-312b-435f-a4fc-77f002bc9a46",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        688,
+        384
+      ],
+      "id": "d9d4edce-6f80-47fe-bc60-c4df85f9e08e",
+      "name": "Mistral Cloud Chat Model1",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "iDgomvGaGsH8Hz80",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f1ca7896-7fdb-4c75-b543-a13b28f8964d",
+              "leftValue": "={{ $json.output.status }}",
+              "rightValue": "COMPLETED",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        784,
+        -96
+      ],
+      "id": "c2f69026-056d-4df7-a5b8-f6433137f1bf",
+      "name": "Step 4: Verifying if Interaction with Bot was successful"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.plan }}",
+                    "rightValue": "Basic",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "2f37ec5f-0293-47a8-a3a2-4b7774cccb97"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Basic"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9a84334c-155e-4c6e-be6f-52793d7be654",
+                    "leftValue": "={{ $json.output.plan }}",
+                    "rightValue": "Standard",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Standard"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c16ab0ab-7831-4d5f-95a0-5cde572c2730",
+                    "leftValue": "={{ $json.output.plan }}",
+                    "rightValue": "Premium",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Premium"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1056,
+        -128
+      ],
+      "id": "52ca4548-84ed-4a44-992b-23789d6b601b",
+      "name": "Step 5 : Route based on service plan"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "612259c6-c022-432c-bfd0-50cfae7291d5",
+              "name": "TimeStamp",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "15c66c48-78f1-437a-8188-5540b902975f",
+              "name": "Client_Name",
+              "value": "={{ $json.output.name }}",
+              "type": "string"
+            },
+            {
+              "id": "2826e74e-e78a-41e2-8d7b-9fd00b6e10f1",
+              "name": "Client_Phone",
+              "value": "={{ $json.output.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "acc5b198-2803-49f5-abb3-428e664d3628",
+              "name": "Client_Email",
+              "value": "={{ $json.output.email }}",
+              "type": "string"
+            },
+            {
+              "id": "77c31fcb-c8a3-48b3-902a-e6b1c5800647",
+              "name": "Service_Plan",
+              "value": "={{ $json.output.plan }}",
+              "type": "string"
+            },
+            {
+              "id": "67aa4051-88ab-460f-ab41-10835238fa3f",
+              "name": "Meeting_Date",
+              "value": "={{ $json.output.meeting_date }}",
+              "type": "string"
+            },
+            {
+              "id": "02640f53-d796-4886-8fc7-ea0dbad17988",
+              "name": "Staff_Name",
+              "value": "Linet",
+              "type": "string"
+            },
+            {
+              "id": "de7abfda-64d4-4575-bcc4-071b15457b2e",
+              "name": "Staff_Email",
+              "value": "linetpatriciah@gmail.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1376,
+        -80
+      ],
+      "id": "00f8d004-52f0-468b-922d-bbb1f7ef2a39",
+      "name": "Step 6: Mapping out Data"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $json.Staff_Email }}",
+        "subject": "NEW CLIENT UPDATE",
+        "message": "=  Dear {{ $json.Staff_Name }},\n\nPlease take note of the follwoing client: \nClient_Name: {{ $json.Client_Name }}\nClient_Phone : {{ $json.Client_Phone }}\nClient_Email : {{ $json.Client_Email }}\nService_Plan : {{ $json.Service_Plan }}\nMeeting_Date : {{ $json.Meeting_Date }}\n\n",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1616,
+        -80
+      ],
+      "id": "1703c310-b420-4aec-90dd-2a439e536158",
+      "name": "Step 7 : Staff to approve client",
+      "webhookId": "4e86cc9a-39f8-4b72-9db0-4ba7c69ca5e1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xktAfZoH5nWGkjLp",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/13_zUVfR3VYvnPW-_1ua7ywvL3Jp2rW0wnGCRSUvwtfM/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Premium",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13_zUVfR3VYvnPW-_1ua7ywvL3Jp2rW0wnGCRSUvwtfM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Client_Name": "={{ $('Step 6: Mapping out Data').item.json.Client_Name }}",
+            "TimeStamp": "={{ $('Step 6: Mapping out Data').item.json.TimeStamp }}",
+            "Client_Phone": "={{ $('Step 6: Mapping out Data').item.json.Client_Phone }}",
+            "Client_Email": "={{ $('Step 6: Mapping out Data').item.json.Client_Email }}",
+            "Service_Plan": "={{ $('Step 6: Mapping out Data').item.json.Service_Plan }}",
+            "Meeting_Date": "={{ $('Step 6: Mapping out Data').item.json.Meeting_Date }}",
+            "Staff": "={{ $('Step 6: Mapping out Data').item.json.Staff_Name }}",
+            "Staff_Email": "={{ $('Step 6: Mapping out Data').item.json.Staff_Email }}"
+          },
+          "matchingColumns": [
+            "Client_Name"
+          ],
+          "schema": [
+            {
+              "id": "TimeStamp",
+              "displayName": "TimeStamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Client_Name",
+              "displayName": "Client_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Client_Phone",
+              "displayName": "Client_Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Client_Email",
+              "displayName": "Client_Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service_Plan",
+              "displayName": "Service_Plan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meeting_Date",
+              "displayName": "Meeting_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Staff",
+              "displayName": "Staff",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Staff_Email",
+              "displayName": "Staff_Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1824,
+        -80
+      ],
+      "id": "18f05c09-617f-4297-b7f0-99eac6cf2234",
+      "name": "Step 8 : Updating Client Info on Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ztYfHRCIiWz2w4pJ",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "618e0638203f468162c7c8ed2c31bc445770777e2517bc147b7111b668ab444f@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Scheduled Meetings"
+        },
+        "start": "2026-05-25T09:30:00",
+        "end": "2026-05-25T10:45:00",
+        "additionalFields": {
+          "attendees": [
+            "={{ $json.Client_Email }}",
+            "={{ $json.Staff_Email }}"
+          ],
+          "summary": "Introductory call"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        2032,
+        -80
+      ],
+      "id": "9df426bc-8816-43cf-a13d-7fd1ca5627bd",
+      "name": "Step 9 : Schedule call for client and staff",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "566PMXd785bRA7uR",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Step 8 : Updating Client Info on Sheets').item.json.Client_Email }}",
+        "subject": "Introductory call & Business Expectations",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      background-color: #f4f4f4;\n      margin: 0;\n      padding: 0;\n    }\n    .container {\n      max-width: 600px;\n      margin: 40px auto;\n      background-color: #ffffff;\n      border-radius: 8px;\n      overflow: hidden;\n      box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n    }\n    .header {\n      background-color: #1a1a2e;\n      padding: 30px;\n      text-align: center;\n    }\n    .header h1 {\n      color: #ffffff;\n      font-size: 22px;\n      margin: 0;\n    }\n    .body {\n      padding: 30px;\n      color: #333333;\n      line-height: 1.8;\n    }\n    .body p {\n      margin: 0 0 16px;\n    }\n    .details-box {\n      background-color: #f0f4ff;\n      border-left: 4px solid #1a1a2e;\n      border-radius: 4px;\n      padding: 16px 20px;\n      margin: 20px 0;\n    }\n    .details-box p {\n      margin: 6px 0;\n      font-size: 15px;\n    }\n    .details-box span {\n      font-weight: bold;\n      color: #1a1a2e;\n    }\n    .meeting-box {\n      background-color: #fff8e1;\n      border-left: 4px solid #f0a500;\n      border-radius: 4px;\n      padding: 16px 20px;\n      margin: 20px 0;\n    }\n    .meeting-box p {\n      margin: 6px 0;\n      font-size: 15px;\n    }\n    .meeting-box span {\n      font-weight: bold;\n      color: #f0a500;\n    }\n    .btn {\n      display: inline-block;\n      margin: 20px 0;\n      padding: 12px 28px;\n      background-color: #1a1a2e;\n      color: #ffffff;\n      text-decoration: none;\n      border-radius: 6px;\n      font-size: 15px;\n    }\n    .footer {\n      background-color: #f4f4f4;\n      text-align: center;\n      padding: 20px;\n      font-size: 13px;\n      color: #888888;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n\n    <div class=\"header\">\n      <h1>Your Booking Confirmation</h1>\n    </div>\n\n    <div class=\"body\">\n      <p>Dear <strong>{{ $('Step 6: Mapping out Data').item.json.Client_Name }}</strong>,</p>\n\n      <p>Thank you for trusting us with automating services in your current company. Please confirm that your details are as follows:</p>\n\n      <div class=\"details-box\">\n        <p><span>Name:</span> {{ $('Step 6: Mapping out Data').item.json.Client_Name }}</p>\n        <p><span>Phone:</span> {{ $('Step 6: Mapping out Data').item.json.Client_Phone }}</p>\n        <p><span>Email:</span> {{ $('Step 6: Mapping out Data').item.json.Client_Email }}</p>\n        <p><span>Plan:</span> {{ $('Step 6: Mapping out Data').item.json.Service_Plan }}</p>\n      </div>\n\n      <p>We have scheduled a call with one of our staff members who will be your point of contact:</p>\n\n      <div class=\"details-box\">\n        <p><span>Name:</span> {{ $('Step 6: Mapping out Data').item.json.Staff_Name }}</p>\n        <p><span>Email:</span> {{ $('Step 6: Mapping out Data').item.json.Staff_Email }}</p>\n      </div>\n\n      <p>Feel free to reach out to them in case of any questions.</p>\n\n      <div class=\"meeting-box\">\n        <p><span>📅 Meeting Date:</span> {{ $('Step 6: Mapping out Data').item.json.Meeting_Date }}</p>\n        <p><span>🕘 Time:</span> 9:30 AM</p>\n        <p><span>📌 Note:</span> Please be on the lookout on your calendar for a meeting invite.</p>\n      </div>\n\n      <a href=\"{{ $json.htmlLink }}\" class=\"btn\">Join Meeting</a>\n\n      <p>I am looking forward to meeting you!</p>\n\n      <p>Warm regards,<br/>\n      <strong>{{ $('Step 6: Mapping out Data').item.json.Staff_Name }}</strong></p>\n    </div>\n\n    <div class=\"footer\">\n      <p>This is an automated message. Please do not reply directly to this email.</p>\n    </div>\n\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2240,
+        -80
+      ],
+      "id": "608b4411-b9f7-464f-8734-b5a466912846",
+      "name": "Step 10 : Sending Client Email",
+      "webhookId": "7b885005-f873-483c-b460-633b0e8ac554",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xktAfZoH5nWGkjLp",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Data Details Collwcting;\n\nName\nEmail\nPhone\nPlan\nMeeting Date "
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "883e471d-bef8-42d5-b107-0814cef80326",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Step 1 : Runs Daily at 6.30pm": {
+      "main": [
+        [
+          {
+            "node": "Step 3 : Samson Selling Services",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 2: Chat Interface to Interact with Client": {
+      "main": [
+        [
+          {
+            "node": "Step 3 : Samson Selling Services",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Step 3 : Samson Selling Services",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Step 3 : Samson Selling Services",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Step 3 : Samson Selling Services",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Step 3 : Samson Selling Services",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 3 : Samson Selling Services": {
+      "main": [
+        [
+          {
+            "node": "Step 4: Verifying if Interaction with Bot was successful",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 4: Verifying if Interaction with Bot was successful": {
+      "main": [
+        [
+          {
+            "node": "Step 5 : Route based on service plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 5 : Route based on service plan": {
+      "main": [
+        [],
+        [],
+        [
+          {
+            "node": "Step 6: Mapping out Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 6: Mapping out Data": {
+      "main": [
+        [
+          {
+            "node": "Step 7 : Staff to approve client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 7 : Staff to approve client": {
+      "main": [
+        [
+          {
+            "node": "Step 8 : Updating Client Info on Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 8 : Updating Client Info on Sheets": {
+      "main": [
+        [
+          {
+            "node": "Step 9 : Schedule call for client and staff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 9 : Schedule call for client and staff": {
+      "main": [
+        [
+          {
+            "node": "Step 10 : Sending Client Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "8a9feccb-449e-4703-976a-ceb268777ba9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1d1e892219c8c40fc0a63bad2e25e5d9e60671d62bd97060b60e8143d17c82d0"
+  },
+  "id": "ycu0UbZk6jIBP4Wb",
+  "tags": []
+}
